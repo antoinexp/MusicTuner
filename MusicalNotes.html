@@ -74,14 +74,16 @@
                             const note = Math.floor((freq - freqMin) / deltaNote);
                             const nextNote = Math.floor((nextFreq - freqMin) / deltaNote);
 
-                            if (0 <= note && note < 4 * 12) {
-                                j = note;
-                                if (i > 0 && i < data.length) {
-                                    buckets_v[j] = 0.5 * (data[i] + data[i + 1]);
+                            if (-1 <= note && note < 4 * 12) {
+                                if (note != nextNote) {
+                                    j = note + 1;
+                                    if (i > 0 && i < data.length) {
+                                        buckets_v[j] = 0.5 * (data[i] + data[i + 1]);
 
-                                }
-                                else {
-                                    buckets_v[j] = data[i];
+                                    }
+                                    else {
+                                        buckets_v[j] = data[i];
+                                    }
                                 }
                             }
                         };
@@ -89,7 +91,8 @@
                         mx = Math.max.apply(null, buckets_v);
 
                         buckets_v.forEach((v, i) => {
-                            v /= mx;
+                            //v /= mx;
+                            v = Math.min(v / 300., 1.);
                             cvsContext.fillRect(i * canvas.width / (12 * 4), 30 + (canvas.height - 30) * (1 - v), canvas.width / (12 * 4), 30 + (canvas.height - 30) * v);
                         });
                     }
