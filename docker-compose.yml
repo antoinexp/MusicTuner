@@ -1,0 +1,34 @@
+version: '3'
+services:
+  create_project:
+    image: "node"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    command: "npx create-react-app tuner"
+
+  install_package:
+    image: "node"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./tuner:/home/node/app
+    command: "npm audit fix"
+
+  start:
+    image: "node"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./tuner:/home/node/app
+    ports:
+     - "8888:3000"
+    command: "npm start"
+    stdin_open: true
